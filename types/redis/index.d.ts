@@ -61,6 +61,8 @@ export interface ClientOpts {
 
 export type Callback<T> = (err: Error | null, reply: T) => void;
 
+export type Key = string | Buffer;
+
 export interface ServerInfo {
     redis_version: string;
     versions: number[];
@@ -77,13 +79,13 @@ export interface OverloadedCommand<T, U, R> {
 }
 
 export interface OverloadedKeyCommand<T, U, R> {
-    (key: string, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, arg6: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, arg3: T, arg4: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, arg3: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, cb?: Callback<U>): R;
-    (key: string, arg1: T | T[], cb?: Callback<U>): R;
-    (key: string, ...args: Array<T | Callback<U>>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, arg6: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, arg4: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T | T[], cb?: Callback<U>): R;
+    (key: Key, ...args: Array<T | Callback<U>>): R;
     (...args: Array<string | T | Callback<U>>): R;
 }
 
@@ -98,13 +100,13 @@ export interface OverloadedListCommand<T, U, R> {
 }
 
 export interface OverloadedSetCommand<T, U, R> {
-    (key: string, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, arg6: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, arg3: T, arg4: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, arg3: T, cb?: Callback<U>): R;
-    (key: string, arg1: T, arg2: T, cb?: Callback<U>): R;
-    (key: string, arg1: T | { [key: string]: T } | T[], cb?: Callback<U>): R;
-    (key: string, ...args: Array<T | Callback<U>>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, arg6: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, arg4: T, arg5: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, arg4: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, arg3: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T, arg2: T, cb?: Callback<U>): R;
+    (key: Key, arg1: T | { [key: string]: T } | T[], cb?: Callback<U>): R;
+    (key: Key, ...args: Array<T | Callback<U>>): R;
 }
 
 export interface OverloadedLastCommand<T1, T2, U, R> {
@@ -196,8 +198,8 @@ export interface Commands<R> {
     /**
      * Append a value to a key.
      */
-    append(key: string, value: string, cb?: Callback<number>): R;
-    APPEND(key: string, value: string, cb?: Callback<number>): R;
+    append(key: Key, value: string, cb?: Callback<number>): R;
+    APPEND(key: Key, value: string, cb?: Callback<number>): R;
 
     /**
      * Asynchronously rewrite the append-only file.
@@ -214,10 +216,10 @@ export interface Commands<R> {
     /**
      * Count set bits in a string.
      */
-    bitcount(key: string, cb?: Callback<number>): R;
-    bitcount(key: string, start: number, end: number, cb?: Callback<number>): R;
-    BITCOUNT(key: string, cb?: Callback<number>): R;
-    BITCOUNT(key: string, start: number, end: number, cb?: Callback<number>): R;
+    bitcount(key: Key, cb?: Callback<number>): R;
+    bitcount(key: Key, start: number, end: number, cb?: Callback<number>): R;
+    BITCOUNT(key: Key, cb?: Callback<number>): R;
+    BITCOUNT(key: Key, start: number, end: number, cb?: Callback<number>): R;
 
     /**
      * Perform arbitrary bitfield integer operations on strings.
@@ -228,24 +230,24 @@ export interface Commands<R> {
     /**
      * Perform bitwise operations between strings.
      */
-    bitop(operation: string, destkey: string, key1: string, key2: string, key3: string, cb?: Callback<number>): R;
-    bitop(operation: string, destkey: string, key1: string, key2: string, cb?: Callback<number>): R;
-    bitop(operation: string, destkey: string, key: string, cb?: Callback<number>): R;
-    bitop(operation: string, destkey: string, ...args: Array<string | Callback<number>>): R;
-    BITOP(operation: string, destkey: string, key1: string, key2: string, key3: string, cb?: Callback<number>): R;
-    BITOP(operation: string, destkey: string, key1: string, key2: string, cb?: Callback<number>): R;
-    BITOP(operation: string, destkey: string, key: string, cb?: Callback<number>): R;
-    BITOP(operation: string, destkey: string, ...args: Array<string | Callback<number>>): R;
+    bitop(operation: string, destkey: Key, key1: Key, key2: Key, key3: Key, cb?: Callback<number>): R;
+    bitop(operation: string, destkey: Key, key1: Key, key2: Key, cb?: Callback<number>): R;
+    bitop(operation: string, destkey: Key, key: Key, cb?: Callback<number>): R;
+    bitop(operation: string, destkey: Key, ...args: Array<string | Callback<number>>): R;
+    BITOP(operation: string, destkey: Key, key1: Key, key2: Key, key3: Key, cb?: Callback<number>): R;
+    BITOP(operation: string, destkey: Key, key1: Key, key2: Key, cb?: Callback<number>): R;
+    BITOP(operation: string, destkey: Key, key: Key, cb?: Callback<number>): R;
+    BITOP(operation: string, destkey: Key, ...args: Array<string | Callback<number>>): R;
 
     /**
      * Find first bit set or clear in a string.
      */
-    bitpos(key: string, bit: number, start: number, end: number, cb?: Callback<number>): R;
-    bitpos(key: string, bit: number, start: number, cb?: Callback<number>): R;
-    bitpos(key: string, bit: number, cb?: Callback<number>): R;
-    BITPOS(key: string, bit: number, start: number, end: number, cb?: Callback<number>): R;
-    BITPOS(key: string, bit: number, start: number, cb?: Callback<number>): R;
-    BITPOS(key: string, bit: number, cb?: Callback<number>): R;
+    bitpos(key: Key, bit: number, start: number, end: number, cb?: Callback<number>): R;
+    bitpos(key: Key, bit: number, start: number, cb?: Callback<number>): R;
+    bitpos(key: Key, bit: number, cb?: Callback<number>): R;
+    BITPOS(key: Key, bit: number, start: number, end: number, cb?: Callback<number>): R;
+    BITPOS(key: Key, bit: number, start: number, cb?: Callback<number>): R;
+    BITPOS(key: Key, bit: number, cb?: Callback<number>): R;
 
     /**
      * Remove and get the first element in a list, or block until one is available.
@@ -328,14 +330,14 @@ export interface Commands<R> {
     /**
      * Decrement the integer value of a key by one.
      */
-    decr(key: string, cb?: Callback<number>): R;
-    DECR(key: string, cb?: Callback<number>): R;
+    decr(key: Key, cb?: Callback<number>): R;
+    DECR(key: Key, cb?: Callback<number>): R;
 
     /**
      * Decrement the integer value of a key by the given number.
      */
-    decrby(key: string, decrement: number, cb?: Callback<number>): R;
-    DECRBY(key: string, decrement: number, cb?: Callback<number>): R;
+    decrby(key: Key, decrement: number, cb?: Callback<number>): R;
+    DECRBY(key: Key, decrement: number, cb?: Callback<number>): R;
 
     /**
      * Delete a key.
@@ -352,8 +354,8 @@ export interface Commands<R> {
     /**
      * Return a serialized version of the value stored at the specified key.
      */
-    dump(key: string, cb?: Callback<string>): R;
-    DUMP(key: string, cb?: Callback<string>): R;
+    dump(key: Key, cb?: Callback<string>): R;
+    DUMP(key: Key, cb?: Callback<string>): R;
 
     /**
      * Echo the given string.
@@ -382,14 +384,14 @@ export interface Commands<R> {
     /**
      * Set a key's time to live in seconds.
      */
-    expire(key: string, seconds: number, cb?: Callback<number>): R;
-    EXPIRE(key: string, seconds: number, cb?: Callback<number>): R;
+    expire(key: Key, seconds: number, cb?: Callback<number>): R;
+    EXPIRE(key: Key, seconds: number, cb?: Callback<number>): R;
 
     /**
      * Set the expiration for a key as a UNIX timestamp.
      */
-    expireat(key: string, timestamp: number, cb?: Callback<number>): R;
-    EXPIREAT(key: string, timestamp: number, cb?: Callback<number>): R;
+    expireat(key: Key, timestamp: number, cb?: Callback<number>): R;
+    EXPIREAT(key: Key, timestamp: number, cb?: Callback<number>): R;
 
     /**
      * Remove all keys from all databases.
@@ -446,26 +448,26 @@ export interface Commands<R> {
     /**
      * Get the value of a key.
      */
-    get(key: string, cb?: Callback<string | null>): R;
-    GET(key: string, cb?: Callback<string | null>): R;
+    get(key: Key, cb?: Callback<string | null>): R;
+    GET(key: Key, cb?: Callback<string | null>): R;
 
     /**
      * Returns the bit value at offset in the string value stored at key.
      */
-    getbit(key: string, offset: number, cb?: Callback<number>): R;
-    GETBIT(key: string, offset: number, cb?: Callback<number>): R;
+    getbit(key: Key, offset: number, cb?: Callback<number>): R;
+    GETBIT(key: Key, offset: number, cb?: Callback<number>): R;
 
     /**
      * Get a substring of the string stored at a key.
      */
-    getrange(key: string, start: number, end: number, cb?: Callback<string>): R;
-    GETRANGE(key: string, start: number, end: number, cb?: Callback<string>): R;
+    getrange(key: Key, start: number, end: number, cb?: Callback<string>): R;
+    GETRANGE(key: Key, start: number, end: number, cb?: Callback<string>): R;
 
     /**
      * Set the string value of a key and return its old value.
      */
-    getset(key: string, value: string, cb?: Callback<string>): R;
-    GETSET(key: string, value: string, cb?: Callback<string>): R;
+    getset(key: Key, value: string, cb?: Callback<string>): R;
+    GETSET(key: Key, value: string, cb?: Callback<string>): R;
 
     /**
      * Delete on or more hash fields.
@@ -476,44 +478,44 @@ export interface Commands<R> {
     /**
      * Determine if a hash field exists.
      */
-    hexists(key: string, field: string, cb?: Callback<number>): R;
-    HEXISTS(key: string, field: string, cb?: Callback<number>): R;
+    hexists(key: Key, field: string, cb?: Callback<number>): R;
+    HEXISTS(key: Key, field: string, cb?: Callback<number>): R;
 
     /**
      * Get the value of a hash field.
      */
-    hget(key: string, field: string, cb?: Callback<string>): R;
-    HGET(key: string, field: string, cb?: Callback<string>): R;
+    hget(key: Key, field: string, cb?: Callback<string>): R;
+    HGET(key: Key, field: string, cb?: Callback<string>): R;
 
     /**
      * Get all fields and values in a hash.
      */
-    hgetall(key: string, cb?: Callback<{ [key: string]: string }>): R;
-    HGETALL(key: string, cb?: Callback<{ [key: string]: string }>): R;
+    hgetall(key: Key, cb?: Callback<{ [key: string]: string }>): R;
+    HGETALL(key: Key, cb?: Callback<{ [key: string]: string }>): R;
 
     /**
      * Increment the integer value of a hash field by the given number.
      */
-    hincrby(key: string, field: string, increment: number, cb?: Callback<number>): R;
-    HINCRBY(key: string, field: string, increment: number, cb?: Callback<number>): R;
+    hincrby(key: Key, field: string, increment: number, cb?: Callback<number>): R;
+    HINCRBY(key: Key, field: string, increment: number, cb?: Callback<number>): R;
 
     /**
      * Increment the float value of a hash field by the given amount.
      */
-    hincrbyfloat(key: string, field: string, increment: number, cb?: Callback<string>): R;
-    HINCRBYFLOAT(key: string, field: string, increment: number, cb?: Callback<string>): R;
+    hincrbyfloat(key: Key, field: string, increment: number, cb?: Callback<string>): R;
+    HINCRBYFLOAT(key: Key, field: string, increment: number, cb?: Callback<string>): R;
 
     /**
      * Get all the fields of a hash.
      */
-    hkeys(key: string, cb?: Callback<string[]>): R;
-    HKEYS(key: string, cb?: Callback<string[]>): R;
+    hkeys(key: Key, cb?: Callback<string[]>): R;
+    HKEYS(key: Key, cb?: Callback<string[]>): R;
 
     /**
      * Get the number of fields in a hash.
      */
-    hlen(key: string, cb?: Callback<number>): R;
-    HLEN(key: string, cb?: Callback<number>): R;
+    hlen(key: Key, cb?: Callback<number>): R;
+    HLEN(key: Key, cb?: Callback<number>): R;
 
     /**
      * Get the values of all the given hash fields.
@@ -524,44 +526,44 @@ export interface Commands<R> {
     /**
      * Set the string value of a hash field.
      */
-    hset(key: string, field: string, value: string, cb?: Callback<number>): R;
-    HSET(key: string, field: string, value: string, cb?: Callback<number>): R;
+    hset(key: Key, field: string, value: string, cb?: Callback<number>): R;
+    HSET(key: Key, field: string, value: string, cb?: Callback<number>): R;
 
     /**
      * Set the value of a hash field, only if the field does not exist.
      */
-    hsetnx(key: string, field: string, value: string, cb?: Callback<number>): R;
-    HSETNX(key: string, field: string, value: string, cb?: Callback<number>): R;
+    hsetnx(key: Key, field: string, value: string, cb?: Callback<number>): R;
+    HSETNX(key: Key, field: string, value: string, cb?: Callback<number>): R;
 
     /**
      * Get the length of the value of a hash field.
      */
-    hstrlen(key: string, field: string, cb?: Callback<number>): R;
-    HSTRLEN(key: string, field: string, cb?: Callback<number>): R;
+    hstrlen(key: Key, field: string, cb?: Callback<number>): R;
+    HSTRLEN(key: Key, field: string, cb?: Callback<number>): R;
 
     /**
      * Get all the values of a hash.
      */
-    hvals(key: string, cb?: Callback<string[]>): R;
-    HVALS(key: string, cb?: Callback<string[]>): R;
+    hvals(key: Key, cb?: Callback<string[]>): R;
+    HVALS(key: Key, cb?: Callback<string[]>): R;
 
     /**
      * Increment the integer value of a key by one.
      */
-    incr(key: string, cb?: Callback<number>): R;
-    INCR(key: string, cb?: Callback<number>): R;
+    incr(key: Key, cb?: Callback<number>): R;
+    INCR(key: Key, cb?: Callback<number>): R;
 
     /**
      * Increment the integer value of a key by the given amount.
      */
-    incrby(key: string, increment: number, cb?: Callback<number>): R;
-    INCRBY(key: string, increment: number, cb?: Callback<number>): R;
+    incrby(key: Key, increment: number, cb?: Callback<number>): R;
+    INCRBY(key: Key, increment: number, cb?: Callback<number>): R;
 
     /**
      * Increment the float value of a key by the given amount.
      */
-    incrbyfloat(key: string, increment: number, cb?: Callback<string>): R;
-    INCRBYFLOAT(key: string, increment: number, cb?: Callback<string>): R;
+    incrbyfloat(key: Key, increment: number, cb?: Callback<string>): R;
+    INCRBYFLOAT(key: Key, increment: number, cb?: Callback<string>): R;
 
     /**
      * Find all keys matching the given pattern.
@@ -578,26 +580,26 @@ export interface Commands<R> {
     /**
      * Get an element from a list by its index.
      */
-    lindex(key: string, index: number, cb?: Callback<string>): R;
-    LINDEX(key: string, index: number, cb?: Callback<string>): R;
+    lindex(key: Key, index: number, cb?: Callback<string>): R;
+    LINDEX(key: Key, index: number, cb?: Callback<string>): R;
 
     /**
      * Insert an element before or after another element in a list.
      */
-    linsert(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string, cb?: Callback<string>): R;
-    LINSERT(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string, cb?: Callback<string>): R;
+    linsert(key: Key, dir: 'BEFORE' | 'AFTER', pivot: string, value: string, cb?: Callback<string>): R;
+    LINSERT(key: Key, dir: 'BEFORE' | 'AFTER', pivot: string, value: string, cb?: Callback<string>): R;
 
     /**
      * Get the length of a list.
      */
-    llen(key: string, cb?: Callback<number>): R;
-    LLEN(key: string, cb?: Callback<number>): R;
+    llen(key: Key, cb?: Callback<number>): R;
+    LLEN(key: Key, cb?: Callback<number>): R;
 
     /**
      * Remove and get the first element in a list.
      */
-    lpop(key: string, cb?: Callback<string>): R;
-    LPOP(key: string, cb?: Callback<string>): R;
+    lpop(key: Key, cb?: Callback<string>): R;
+    LPOP(key: Key, cb?: Callback<string>): R;
 
     /**
      * Prepend one or multiple values to a list.
@@ -608,32 +610,32 @@ export interface Commands<R> {
     /**
      * Prepend a value to a list, only if the list exists.
      */
-    lpushx(key: string, value: string, cb?: Callback<number>): R;
-    LPUSHX(key: string, value: string, cb?: Callback<number>): R;
+    lpushx(key: Key, value: string, cb?: Callback<number>): R;
+    LPUSHX(key: Key, value: string, cb?: Callback<number>): R;
 
     /**
      * Get a range of elements from a list.
      */
-    lrange(key: string, start: number, stop: number, cb?: Callback<string[]>): R;
-    LRANGE(key: string, start: number, stop: number, cb?: Callback<string[]>): R;
+    lrange(key: Key, start: number, stop: number, cb?: Callback<string[]>): R;
+    LRANGE(key: Key, start: number, stop: number, cb?: Callback<string[]>): R;
 
     /**
      * Remove elements from a list.
      */
-    lrem(key: string, count: number, value: string, cb?: Callback<number>): R;
-    LREM(key: string, count: number, value: string, cb?: Callback<number>): R;
+    lrem(key: Key, count: number, value: string, cb?: Callback<number>): R;
+    LREM(key: Key, count: number, value: string, cb?: Callback<number>): R;
 
     /**
      * Set the value of an element in a list by its index.
      */
-    lset(key: string, index: number, value: string, cb?: Callback<'OK'>): R;
-    LSET(key: string, index: number, value: string, cb?: Callback<'OK'>): R;
+    lset(key: Key, index: number, value: string, cb?: Callback<'OK'>): R;
+    LSET(key: Key, index: number, value: string, cb?: Callback<'OK'>): R;
 
     /**
      * Trim a list to the specified range.
      */
-    ltrim(key: string, start: number, stop: number, cb?: Callback<'OK'>): R;
-    LTRIM(key: string, start: number, stop: number, cb?: Callback<'OK'>): R;
+    ltrim(key: Key, start: number, stop: number, cb?: Callback<'OK'>): R;
+    LTRIM(key: Key, start: number, stop: number, cb?: Callback<'OK'>): R;
 
     /**
      * Get the values of all given keys.
@@ -650,8 +652,8 @@ export interface Commands<R> {
     /**
      * Move a key to another database.
      */
-    move(key: string, db: string | number): R;
-    MOVE(key: string, db: string | number): R;
+    move(key: Key, db: string | number): R;
+    MOVE(key: Key, db: string | number): R;
 
     /**
      * Set multiple keys to multiple values.
@@ -674,20 +676,20 @@ export interface Commands<R> {
     /**
      * Remove the expiration from a key.
      */
-    persist(key: string, cb?: Callback<number>): R;
-    PERSIST(key: string, cb?: Callback<number>): R;
+    persist(key: Key, cb?: Callback<number>): R;
+    PERSIST(key: Key, cb?: Callback<number>): R;
 
     /**
      * Remove a key's time to live in milliseconds.
      */
-    pexpire(key: string, milliseconds: number, cb?: Callback<number>): R;
-    PEXPIRE(key: string, milliseconds: number, cb?: Callback<number>): R;
+    pexpire(key: Key, milliseconds: number, cb?: Callback<number>): R;
+    PEXPIRE(key: Key, milliseconds: number, cb?: Callback<number>): R;
 
     /**
      * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
      */
-    pexpireat(key: string, millisecondsTimestamp: number, cb?: Callback<number>): R;
-    PEXPIREAT(key: string, millisecondsTimestamp: number, cb?: Callback<number>): R;
+    pexpireat(key: Key, millisecondsTimestamp: number, cb?: Callback<number>): R;
+    PEXPIREAT(key: Key, millisecondsTimestamp: number, cb?: Callback<number>): R;
 
     /**
      * Adds the specified elements to the specified HyperLogLog.
@@ -710,8 +712,8 @@ export interface Commands<R> {
     /**
      * Set the value and expiration in milliseconds of a key.
      */
-    psetex(key: string, milliseconds: number, value: string, cb?: Callback<'OK'>): R;
-    PSETEX(key: string, milliseconds: number, value: string, cb?: Callback<'OK'>): R;
+    psetex(key: Key, milliseconds: number, value: string, cb?: Callback<'OK'>): R;
+    PSETEX(key: Key, milliseconds: number, value: string, cb?: Callback<'OK'>): R;
 
     /**
      * Inspect the state of the Pub/Sub subsytem.
@@ -722,8 +724,8 @@ export interface Commands<R> {
     /**
      * Get the time to live for a key in milliseconds.
      */
-    pttl(key: string, cb?: Callback<number>): R;
-    PTTL(key: string, cb?: Callback<number>): R;
+    pttl(key: Key, cb?: Callback<number>): R;
+    PTTL(key: Key, cb?: Callback<number>): R;
 
     /**
      * Close the connection.
@@ -752,20 +754,20 @@ export interface Commands<R> {
     /**
      * Rename a key.
      */
-    rename(key: string, newkey: string, cb?: Callback<'OK'>): R;
-    RENAME(key: string, newkey: string, cb?: Callback<'OK'>): R;
+    rename(key: Key, newkey: Key, cb?: Callback<'OK'>): R;
+    RENAME(key: Key, newkey: Key, cb?: Callback<'OK'>): R;
 
     /**
      * Rename a key, only if the new key does not exist.
      */
-    renamenx(key: string, newkey: string, cb?: Callback<number>): R;
-    RENAMENX(key: string, newkey: string, cb?: Callback<number>): R;
+    renamenx(key: Key, newkey: Key, cb?: Callback<number>): R;
+    RENAMENX(key: Key, newkey: Key, cb?: Callback<number>): R;
 
     /**
      * Create a key using the provided serialized value, previously obtained using DUMP.
      */
-    restore(key: string, ttl: number, serializedValue: string, cb?: Callback<'OK'>): R;
-    RESTORE(key: string, ttl: number, serializedValue: string, cb?: Callback<'OK'>): R;
+    restore(key: Key, ttl: number, serializedValue: string, cb?: Callback<'OK'>): R;
+    RESTORE(key: Key, ttl: number, serializedValue: string, cb?: Callback<'OK'>): R;
 
     /**
      * Return the role of the instance in the context of replication.
@@ -776,8 +778,8 @@ export interface Commands<R> {
     /**
      * Remove and get the last element in a list.
      */
-    rpop(key: string, cb?: Callback<string>): R;
-    RPOP(key: string, cb?: Callback<string>): R;
+    rpop(key: Key, cb?: Callback<string>): R;
+    RPOP(key: Key, cb?: Callback<string>): R;
 
     /**
      * Remove the last element in a list, prepend it to another list and return it.
@@ -794,8 +796,8 @@ export interface Commands<R> {
     /**
      * Append a value to a list, only if the list exists.
      */
-    rpushx(key: string, value: string, cb?: Callback<number>): R;
-    RPUSHX(key: string, value: string, cb?: Callback<number>): R;
+    rpushx(key: Key, value: string, cb?: Callback<number>): R;
+    RPUSHX(key: Key, value: string, cb?: Callback<number>): R;
 
     /**
      * Append one or multiple members to a set.
@@ -812,8 +814,8 @@ export interface Commands<R> {
     /**
      * Get the number of members in a set.
      */
-    scard(key: string, cb?: Callback<number>): R;
-    SCARD(key: string, cb?: Callback<number>): R;
+    scard(key: Key, cb?: Callback<number>): R;
+    SCARD(key: Key, cb?: Callback<number>): R;
 
     /**
      * DEBUG - Set the debug mode for executed scripts.
@@ -846,38 +848,38 @@ export interface Commands<R> {
     /**
      * Set the string value of a key.
      */
-    set(key: string, value: string, cb?: Callback<'OK'>): R;
-    set(key: string, value: string, flag: string, cb?: Callback<'OK'>): R;
-    set(key: string, value: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R;
-    set(key: string, value: string, mode: string, duration: number, flag: string, cb?: Callback<'OK' | undefined>): R;
-    SET(key: string, value: string, cb?: Callback<'OK'>): R;
-    SET(key: string, value: string, flag: string, cb?: Callback<'OK'>): R;
-    SET(key: string, value: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R;
-    SET(key: string, value: string, mode: string, duration: number, flag: string, cb?: Callback<'OK' | undefined>): R;
+    set(key: Key, value: string, cb?: Callback<'OK'>): R;
+    set(key: Key, value: string, flag: string, cb?: Callback<'OK'>): R;
+    set(key: Key, value: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R;
+    set(key: Key, value: string, mode: string, duration: number, flag: string, cb?: Callback<'OK' | undefined>): R;
+    SET(key: Key, value: string, cb?: Callback<'OK'>): R;
+    SET(key: Key, value: string, flag: string, cb?: Callback<'OK'>): R;
+    SET(key: Key, value: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R;
+    SET(key: Key, value: string, mode: string, duration: number, flag: string, cb?: Callback<'OK' | undefined>): R;
 
     /**
      * Sets or clears the bit at offset in the string value stored at key.
      */
-    setbit(key: string, offset: number, value: string, cb?: Callback<number>): R;
-    SETBIT(key: string, offset: number, value: string, cb?: Callback<number>): R;
+    setbit(key: Key, offset: number, value: string, cb?: Callback<number>): R;
+    SETBIT(key: Key, offset: number, value: string, cb?: Callback<number>): R;
 
     /**
      * Set the value and expiration of a key.
      */
-    setex(key: string, seconds: number, value: string, cb?: Callback<string>): R;
-    SETEX(key: string, seconds: number, value: string, cb?: Callback<string>): R;
+    setex(key: Key, seconds: number, value: string, cb?: Callback<string>): R;
+    SETEX(key: Key, seconds: number, value: string, cb?: Callback<string>): R;
 
     /**
      * Set the value of a key, only if the key does not exist.
      */
-    setnx(key: string, value: string, cb?: Callback<number>): R;
-    SETNX(key: string, value: string, cb?: Callback<number>): R;
+    setnx(key: Key, value: string, cb?: Callback<number>): R;
+    SETNX(key: Key, value: string, cb?: Callback<number>): R;
 
     /**
      * Overwrite part of a string at key starting at the specified offset.
      */
-    setrange(key: string, offset: number, value: string, cb?: Callback<number>): R;
-    SETRANGE(key: string, offset: number, value: string, cb?: Callback<number>): R;
+    setrange(key: Key, offset: number, value: string, cb?: Callback<number>): R;
+    SETRANGE(key: Key, offset: number, value: string, cb?: Callback<number>): R;
 
     /**
      * Synchronously save the dataset to disk and then shut down the server.
@@ -900,8 +902,8 @@ export interface Commands<R> {
     /**
      * Determine if a given value is a member of a set.
      */
-    sismember(key: string, member: string, cb?: Callback<number>): R;
-    SISMEMBER(key: string, member: string, cb?: Callback<number>): R;
+    sismember(key: Key, member: string, cb?: Callback<number>): R;
+    SISMEMBER(key: Key, member: string, cb?: Callback<number>): R;
 
     /**
      * Make the server a slave of another instance, or promote it as master.
@@ -918,8 +920,8 @@ export interface Commands<R> {
     /**
      * Get all the members in a set.
      */
-    smembers(key: string, cb?: Callback<string[]>): R;
-    SMEMBERS(key: string, cb?: Callback<string[]>): R;
+    smembers(key: Key, cb?: Callback<string[]>): R;
+    SMEMBERS(key: Key, cb?: Callback<string[]>): R;
 
     /**
      * Move a member from one set to another.
@@ -936,18 +938,18 @@ export interface Commands<R> {
     /**
      * Remove and return one or multiple random members from a set.
      */
-    spop(key: string, cb?: Callback<string>): R;
-    spop(key: string, count: number, cb?: Callback<string[]>): R;
-    SPOP(key: string, cb?: Callback<string>): R;
-    SPOP(key: string, count: number, cb?: Callback<string[]>): R;
+    spop(key: Key, cb?: Callback<string>): R;
+    spop(key: Key, count: number, cb?: Callback<string[]>): R;
+    SPOP(key: Key, cb?: Callback<string>): R;
+    SPOP(key: Key, count: number, cb?: Callback<string[]>): R;
 
     /**
      * Get one or multiple random members from a set.
      */
-    srandmember(key: string, cb?: Callback<string>): R;
-    srandmember(key: string, count: number, cb?: Callback<string[]>): R;
-    SRANDMEMBER(key: string, cb?: Callback<string>): R;
-    SRANDMEMBER(key: string, count: number, cb?: Callback<string[]>): R;
+    srandmember(key: Key, cb?: Callback<string>): R;
+    srandmember(key: Key, count: number, cb?: Callback<string[]>): R;
+    SRANDMEMBER(key: Key, cb?: Callback<string>): R;
+    SRANDMEMBER(key: Key, count: number, cb?: Callback<string[]>): R;
 
     /**
      * Remove one or more members from a set.
@@ -958,8 +960,8 @@ export interface Commands<R> {
     /**
      * Get the length of the value stored in a key.
      */
-    strlen(key: string, cb?: Callback<number>): R;
-    STRLEN(key: string, cb?: Callback<number>): R;
+    strlen(key: Key, cb?: Callback<number>): R;
+    STRLEN(key: Key, cb?: Callback<number>): R;
 
     /**
      * Add multiple sets.
@@ -988,14 +990,14 @@ export interface Commands<R> {
     /**
      * Get the time to live for a key.
      */
-    ttl(key: string, cb?: Callback<number>): R;
-    TTL(key: string, cb?: Callback<number>): R;
+    ttl(key: Key, cb?: Callback<number>): R;
+    TTL(key: Key, cb?: Callback<number>): R;
 
     /**
      * Determine the type stored at key.
      */
-    type(key: string, cb?: Callback<string>): R;
-    TYPE(key: string, cb?: Callback<string>): R;
+    type(key: Key, cb?: Callback<string>): R;
+    TYPE(key: Key, cb?: Callback<string>): R;
 
     /**
      * Forget about all watched keys.
@@ -1024,20 +1026,20 @@ export interface Commands<R> {
     /**
      * Get the number of members in a sorted set.
      */
-    zcard(key: string, cb?: Callback<number>): R;
-    ZCARD(key: string, cb?: Callback<number>): R;
+    zcard(key: Key, cb?: Callback<number>): R;
+    ZCARD(key: Key, cb?: Callback<number>): R;
 
     /**
      * Count the members in a sorted set with scores between the given values.
      */
-    zcount(key: string, min: number | string, max: number | string, cb?: Callback<number>): R;
-    ZCOUNT(key: string, min: number | string, max: number | string, cb?: Callback<number>): R;
+    zcount(key: Key, min: number | string, max: number | string, cb?: Callback<number>): R;
+    ZCOUNT(key: Key, min: number | string, max: number | string, cb?: Callback<number>): R;
 
     /**
      * Increment the score of a member in a sorted set.
      */
-    zincrby(key: string, increment: number, member: string, cb?: Callback<string>): R;
-    ZINCRBY(key: string, increment: number, member: string, cb?: Callback<string>): R;
+    zincrby(key: Key, increment: number, member: string, cb?: Callback<string>): R;
+    ZINCRBY(key: Key, increment: number, member: string, cb?: Callback<string>): R;
 
     /**
      * Intersect multiple sorted sets and store the resulting sorted set in a new key.
@@ -1048,50 +1050,50 @@ export interface Commands<R> {
     /**
      * Count the number of members in a sorted set between a given lexicographic range.
      */
-    zlexcount(key: string, min: string, max: string, cb?: Callback<number>): R;
-    ZLEXCOUNT(key: string, min: string, max: string, cb?: Callback<number>): R;
+    zlexcount(key: Key, min: string, max: string, cb?: Callback<number>): R;
+    ZLEXCOUNT(key: Key, min: string, max: string, cb?: Callback<number>): R;
 
     /**
      * Return a range of members in a sorted set, by index.
      */
-    zrange(key: string, start: number, stop: number, cb?: Callback<string[]>): R;
-    zrange(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
-    ZRANGE(key: string, start: number, stop: number, cb?: Callback<string[]>): R;
-    ZRANGE(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
+    zrange(key: Key, start: number, stop: number, cb?: Callback<string[]>): R;
+    zrange(key: Key, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
+    ZRANGE(key: Key, start: number, stop: number, cb?: Callback<string[]>): R;
+    ZRANGE(key: Key, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
 
     /**
      * Return a range of members in a sorted set, by lexicographical range.
      */
-    zrangebylex(key: string, min: string, max: string, cb?: Callback<string[]>): R;
-    zrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    ZRANGEBYLEX(key: string, min: string, max: string, cb?: Callback<string[]>): R;
-    ZRANGEBYLEX(key: string, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    zrangebylex(key: Key, min: string, max: string, cb?: Callback<string[]>): R;
+    zrangebylex(key: Key, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    ZRANGEBYLEX(key: Key, min: string, max: string, cb?: Callback<string[]>): R;
+    ZRANGEBYLEX(key: Key, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
 
     /**
      * Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
      */
-    zrevrangebylex(key: string, min: string, max: string, cb?: Callback<string[]>): R;
-    zrevrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    ZREVRANGEBYLEX(key: string, min: string, max: string, cb?: Callback<string[]>): R;
-    ZREVRANGEBYLEX(key: string, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    zrevrangebylex(key: Key, min: string, max: string, cb?: Callback<string[]>): R;
+    zrevrangebylex(key: Key, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    ZREVRANGEBYLEX(key: Key, min: string, max: string, cb?: Callback<string[]>): R;
+    ZREVRANGEBYLEX(key: Key, min: string, max: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
 
     /**
      * Return a range of members in a sorted set, by score.
      */
-    zrangebyscore(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R;
-    zrangebyscore(key: string, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
-    zrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    zrangebyscore(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    ZRANGEBYSCORE(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R;
-    ZRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
-    ZRANGEBYSCORE(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    ZRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    zrangebyscore(key: Key, min: number | string, max: number | string, cb?: Callback<string[]>): R;
+    zrangebyscore(key: Key, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
+    zrangebyscore(key: Key, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    zrangebyscore(key: Key, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    ZRANGEBYSCORE(key: Key, min: number | string, max: number | string, cb?: Callback<string[]>): R;
+    ZRANGEBYSCORE(key: Key, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
+    ZRANGEBYSCORE(key: Key, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    ZRANGEBYSCORE(key: Key, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
 
     /**
      * Determine the index of a member in a sorted set.
      */
-    zrank(key: string, member: string, cb?: Callback<number | null>): R;
-    ZRANK(key: string, member: string, cb?: Callback<number | null>): R;
+    zrank(key: Key, member: string, cb?: Callback<number | null>): R;
+    ZRANK(key: Key, member: string, cb?: Callback<number | null>): R;
 
     /**
      * Remove one or more members from a sorted set.
@@ -1102,52 +1104,52 @@ export interface Commands<R> {
     /**
      * Remove all members in a sorted set between the given lexicographical range.
      */
-    zremrangebylex(key: string, min: string, max: string, cb?: Callback<number>): R;
-    ZREMRANGEBYLEX(key: string, min: string, max: string, cb?: Callback<number>): R;
+    zremrangebylex(key: Key, min: string, max: string, cb?: Callback<number>): R;
+    ZREMRANGEBYLEX(key: Key, min: string, max: string, cb?: Callback<number>): R;
 
     /**
      * Remove all members in a sorted set within the given indexes.
      */
-    zremrangebyrank(key: string, start: number, stop: number, cb?: Callback<number>): R;
-    ZREMRANGEBYRANK(key: string, start: number, stop: number, cb?: Callback<number>): R;
+    zremrangebyrank(key: Key, start: number, stop: number, cb?: Callback<number>): R;
+    ZREMRANGEBYRANK(key: Key, start: number, stop: number, cb?: Callback<number>): R;
 
     /**
      * Remove all members in a sorted set within the given indexes.
      */
-    zremrangebyscore(key: string, min: string | number, max: string | number, cb?: Callback<number>): R;
-    ZREMRANGEBYSCORE(key: string, min: string | number, max: string | number, cb?: Callback<number>): R;
+    zremrangebyscore(key: Key, min: string | number, max: string | number, cb?: Callback<number>): R;
+    ZREMRANGEBYSCORE(key: Key, min: string | number, max: string | number, cb?: Callback<number>): R;
 
     /**
      * Return a range of members in a sorted set, by index, with scores ordered from high to low.
      */
-    zrevrange(key: string, start: number, stop: number, cb?: Callback<string[]>): R;
-    zrevrange(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
-    ZREVRANGE(key: string, start: number, stop: number, cb?: Callback<string[]>): R;
-    ZREVRANGE(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
+    zrevrange(key: Key, start: number, stop: number, cb?: Callback<string[]>): R;
+    zrevrange(key: Key, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
+    ZREVRANGE(key: Key, start: number, stop: number, cb?: Callback<string[]>): R;
+    ZREVRANGE(key: Key, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R;
 
     /**
      * Return a range of members in a sorted set, by score, with scores ordered from high to low.
      */
-    zrevrangebyscore(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R;
-    zrevrangebyscore(key: string, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
-    zrevrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    zrevrangebyscore(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R;
-    ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
-    ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
-    ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    zrevrangebyscore(key: Key, min: number | string, max: number | string, cb?: Callback<string[]>): R;
+    zrevrangebyscore(key: Key, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
+    zrevrangebyscore(key: Key, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    zrevrangebyscore(key: Key, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    ZREVRANGEBYSCORE(key: Key, min: number | string, max: number | string, cb?: Callback<string[]>): R;
+    ZREVRANGEBYSCORE(key: Key, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R;
+    ZREVRANGEBYSCORE(key: Key, min: number | string, max: number | string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
+    ZREVRANGEBYSCORE(key: Key, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number, cb?: Callback<string[]>): R;
 
     /**
      * Determine the index of a member in a sorted set, with scores ordered from high to low.
      */
-    zrevrank(key: string, member: string, cb?: Callback<number | null>): R;
-    ZREVRANK(key: string, member: string, cb?: Callback<number | null>): R;
+    zrevrank(key: Key, member: string, cb?: Callback<number | null>): R;
+    ZREVRANK(key: Key, member: string, cb?: Callback<number | null>): R;
 
     /**
      * Get the score associated with the given member in a sorted set.
      */
-    zscore(key: string, member: string, cb?: Callback<string>): R;
-    ZSCORE(key: string, member: string, cb?: Callback<string>): R;
+    zscore(key: Key, member: string, cb?: Callback<string>): R;
+    ZSCORE(key: Key, member: string, cb?: Callback<string>): R;
 
     /**
      * Add multiple sorted sets and store the resulting sorted set in a new key.

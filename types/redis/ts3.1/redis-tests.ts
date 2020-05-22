@@ -145,4 +145,12 @@ client.HINCRBYFLOAT('a', 'b', 1.5, (error, value) => value.startsWith('1'));
 client.zincrby('a', 1, 'b', strCallback);
 client.ZINCRBY('a', 1, 'b', strCallback);
 
+// Buffer as key
+client = redis.createClient({
+    return_buffers: true,
+    detect_buffers: true
+});
+client.set(Buffer.from('abc'), str, okCallback);
+client.get(Buffer.from('abc'), strCallback);
+
 client.flushdb(okCallback);
